@@ -9,21 +9,15 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+
 import os
 from pathlib import Path
 
 
 
-import cloudinary
-import cloudinary.uploader
-import cloudinary.api
-
 # adding config
-cloudinary.config( 
-    cloud_name = "dzjhja6ei", 
-    api_key = "479598353291365", 
-    api_secret = "Uu0WxMxAk5EAGxa0IUDtHooxXGo" 
-)
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -52,8 +46,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary'
+    'cloudinary_storage',
+    'cloudinary',
 ]
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dzjhja6ei',
+    'API_KEY': '479598353291365',
+    'API_SECRET': 'Uu0WxMxAk5EAGxa0IUDtHooxXGo'
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -91,8 +91,10 @@ WSGI_APPLICATION = 'instagram.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'insta',
+        'USER':'moringa',
+        'PASSWORD':'0705176007',
     }
 }
 
@@ -114,14 +116,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+AUTH_PROFILE_MODULE = 'gram.Profile'
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Nairobi'
 
 USE_I18N = True
 
@@ -132,7 +134,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
 
+MEDIA_URL = '/media/'  # or any prefix you choose
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
